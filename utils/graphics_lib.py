@@ -63,12 +63,14 @@ def plot_silhoutte_diagram(X, kmeans_set, silhouette_scores):
     #save_fig("silhouette_analysis_plot")
     plt.show()
 
-def plot_silhouette_scores(silhouette_scores):
+def plot_silhouette_scores(silhouette_scores, range_upper=10):
+    upper = len(silhouette_scores)
+    
     plt.figure(figsize=(8, 3))
-    plt.plot(range(2, 10), silhouette_scores, "bo-")
+    plt.plot(range(2, (upper+2)), silhouette_scores, "bo-")
     plt.xlabel("$k$", fontsize=14)
     plt.ylabel("Silhouette score", fontsize=14)
-    plt.axis([1, 10, 0, 1.2])
+    plt.axis([1, upper, 0, 1.2])
     #save_fig("silhouette_score_vs_k_plot")
     plt.show()
 
