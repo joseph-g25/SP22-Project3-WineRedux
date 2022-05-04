@@ -14,7 +14,7 @@ def KMeans_cluster_load(data, n_clusters=8, n_init=10, max_iter=300, random_stat
     #kmeans_clf.fit(data)
     return kmeans_clf
 
-def mini_KMeans_cluster_load(data, n_clusters=8, n_init=10,
+def mini_KMeans_cluster_load(X, n_clusters=8, n_init=10,
                              max_iter=300, random_state=RANDOM_STATE):
     mini_kmeans_clf = MiniBatchKMeans()
     
