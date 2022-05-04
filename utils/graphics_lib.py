@@ -63,12 +63,14 @@ def plot_silhoutte_diagram(X, kmeans_set, silhouette_scores):
     #save_fig("silhouette_analysis_plot")
     plt.show()
 
-def plot_silhouette_scores(silhouette_scores):
+def plot_silhouette_scores(silhouette_scores, range_upper=10):
+    upper = len(silhouette_scores)
+    
     plt.figure(figsize=(8, 3))
-    plt.plot(range(2, 10), silhouette_scores, "bo-")
+    plt.plot(range(2, (upper+2)), silhouette_scores, "bo-")
     plt.xlabel("$k$", fontsize=14)
     plt.ylabel("Silhouette score", fontsize=14)
-    plt.axis([1, 10, 0, 1.2])
+    plt.axis([1, upper, 0, 1.2])
     #save_fig("silhouette_score_vs_k_plot")
     plt.show()
 
@@ -94,3 +96,42 @@ def plot_corr_matrix_heatmap(corr_matrix, data):
     ax.set_xticklabels(data.columns)
     ax.set_yticklabels(data.columns)
     plt.show()
+
+def plot_data(X):
+    plt.plot(X[:, 0], X[:, 1], 'k.', markersize=2)
+
+def plot_centroids(centroids, weights=None, circle_color='w', cross_color='k'):
+    if weights is not None:
+        centroids = centroids[weights > weights.max() / 10]
+    plt.scatter(centroids[:, 0], centroids[:, 1],
+                marker='o', s=35, linewidths=8,
+                color=circle_color, zorder=10, alpha=0.9)
+    plt.scatter(centroids[:, 0], centroids[:, 1],
+                marker='x', s=2, linewidths=12,
+                color=cross_color, zorder=11, alpha=1)
+
+def plot_decision_boundaries(clusterer, X, resolution=1000, show_centroids=True,
+                             show_xlabels=True, show_ylabels=True):
+    mins = X.min(axis=0) - 0.1
+    maxs = X.max(axis=0) + 0.1
+    xx, yy = np.meshgrid(np.linspace(mins[0], maxs[0], resolution),
+                         np.linspace(mins[1], maxs[1], resolution))
+    Z = clusterer.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+
+    plt.contourf(Z, extent=(mins[0], maxs[0], mins[1], maxs[1]),
+                cmap="Pastel2")
+    plt.contour(Z, extent=(mins[0], maxs[0], mins[1], maxs[1]),
+                linewidths=1, colors='k')
+    plot_data(X)
+    if show_centroids:
+        plot_centroids(clusterer.cluster_centers_)
+
+    if show_xlabels:
+        plt.xlabel("$x_1$", fontsize=14)
+    else:
+        plt.tick_params(labelbottom=False)
+    if show_ylabels:
+        plt.ylabel("$x_2$", fontsize=14, rotation=0)
+    else:
+        plt.tick_params(labelleft=False)

@@ -11,8 +11,8 @@ scikit-learn
 
 ##### TensorFlow-related packages
 
-tensorflow
-tensorboard
+##### tensorflow
+##### tensorboard
 
 ##### Image manipulation
 Pillow

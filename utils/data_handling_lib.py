@@ -2,8 +2,10 @@
 Basic essential tools for handling data prior to training.
 """
 
+import os
 import pandas as pd
 import numpy as np
+import joblib as jbl
 
 from sklearn.model_selection import train_test_split, StratifiedShuffleSplit
 
@@ -58,3 +60,11 @@ def strat_split_dataset(data, label_id, n_splits, test_size=0.15):
     test_set = strat_test_set.drop(label_id, axis=1)
 
     return train_set, train_set_labels, test_set, test_set_labels
+
+def save_model(obj, filename):
+    savedir = "exports/models/" + filename + ".pkl"
+    jbl.dump(obj, savedir)
+
+def load_object(category, filename, filetype= ".pkl"):
+    savedir = "exports/" + category + "/" + filename + filetype
+    return jbl.load(savedir)
