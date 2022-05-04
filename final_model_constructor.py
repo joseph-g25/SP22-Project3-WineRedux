@@ -24,9 +24,13 @@ def create_pipeline(X, y):
     Returns:
         [type]: [description]
     """
+    data_preparation_pipeline = Pipeline([
+        ("kmeans_cluster", KMeans(random_state=RANDOM_STATE)),
+        ("ColumnTransformer", ColumnTransformer(transformers=idk lmfao))
+    ])
+    
     model_pipeline = Pipeline([
-        (),
-        (),
+        #("reg", RegressionModel()),
     ])
     
     model_pipeline.fit(X=X, y=y)

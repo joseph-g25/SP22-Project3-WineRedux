@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Basic essential tools for handling data prior to training.
+Personal library of essential tools for handling data prior
+to training and reading/writing objects to disk.
 """
 
 import pandas as pd
