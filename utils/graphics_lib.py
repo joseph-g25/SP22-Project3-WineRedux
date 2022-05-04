@@ -26,7 +26,7 @@ def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=1000):
     print("Saving figure", fig_id)
     if tight_layout:
         plt.tight_layout()
-    plt.savefig(path, format=fig_extension, dpi=resolution)
+    plt.savefig(path, format=fig_extension, dpi=resolution, facecolor='white', transparent=False)
 
 def plot_fig(x_dim=8, y_dim=4):
     plt.figure(figsize=(x_dim, y_dim))
@@ -88,12 +88,13 @@ def plot_silhoutte_diagram(X, kmeans_set, silhouette_scores, savefig=False):
     else:
         plt.show()
 
-def plot_silhouette_scores(silhouette_scores, savefig=False):
+def plot_silhouette_scores(silhouette_scores, var_name="", savefig=False):
     """
-    AI is creating summary for plot_silhouette_scores
+    Generates and shows a graph of scores for each k value of the n_clusters parameter for KMeans clustering.
 
     Args:
         silhouette_scores (List): A list of silhouette scores for a set of KMeans clustering algorithms.
+        var_name (str, optional): String to label the y-axis according to input variable. Defaults to "".
         savefig (bool, optional): Save plot to exports folder. Defaults to False.
     """
     upper = len(silhouette_scores)
@@ -102,8 +103,11 @@ def plot_silhouette_scores(silhouette_scores, savefig=False):
     plt.plot(range(2, (upper+2)), silhouette_scores, "bo-")
     plt.xlabel("$k$", fontsize=14)
     plt.ylabel("Silhouette score", fontsize=14)
-    plt.axis([1, upper, 0, 1.2])
-
+    plt.axis([1, upper+2, 0, 1.2])
+    if var_name != "":
+        plt.title(label="Set: " + var_name,fontsize=16)
+    plt.suptitle("Silhouette scores for k clusters",fontsize=24, y=1)
+    
     if savefig is True:
         fig_id_count = 0
         dir_path = r"exports/images/"
@@ -117,7 +121,6 @@ def plot_silhouette_scores(silhouette_scores, savefig=False):
         plt.show()
     else:
         plt.show()
-
 
 def plot_corr_matrix_heatmap(corr_matrix, dataset, savefig=False):
     """

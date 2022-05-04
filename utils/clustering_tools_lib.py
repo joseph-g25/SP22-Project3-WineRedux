@@ -48,7 +48,7 @@ def mini_KMeans_cluster_load(X, n_clusters=8, n_init=10,
     mini_kmeans_clf.fit(X=X)
     return mini_kmeans_clf
 
-def make_kmeans_set(X, range_lower=1, range_upper=10, step=1):
+def make_kmeans_set(X, range_lower=2, range_upper=10, step=1):
     """Create a list 
 
     Args:
@@ -64,7 +64,7 @@ def make_kmeans_set(X, range_lower=1, range_upper=10, step=1):
                 for k in range(range_lower, range_upper, step)]
     return kmeans_set
 
-def give_inertias_(kmeans_set):
+def get_inertias_(kmeans_set):
     """
     Give the inertia_ scores for each member of kmeans_set. 
 
@@ -77,20 +77,21 @@ def give_inertias_(kmeans_set):
     inertias_ = [model.inertia_ for model in kmeans_set]
     return inertias_
 
-def give_silhouette_scores(X, range_lower=1, range_upper=10, step=1, kmeans_set=None):
+def get_silhouette_scores(X, range_lower=2, range_upper=10, step=1, kmeans_set=None, return_kmeans_set=False):
     """
     Give the Silhouette Scores for a set of KMeans clustering algorithms.
     
     If a set of KMeans classifiers is given, the function will use that to determine silhouette 
     scores. Else, a set of KMeans classifiers will be generated according to defined upper and
     lower bounds.
-    
+
     Args:
         X (DataFrame): Original feature array which KMeans has been fitted on.
         range_lower (int, optional): [description]. Defaults to 1.
         range_upper (int, optional): [description]. Defaults to 10.
         step (int, optional): [description]. Defaults to 1.
-        kmeans_set ([type], optional): [description]. Defaults to None.
+        kmeans_set (list, optional): List of KMeans classifiers to calculate silhouette scores of. Defaults to None.
+        return_kmeans_set (bool, optional): If True and kmeans_set is None, returns the generated list of KMeans classifiers.
 
     Returns:
         [type]: [description]
@@ -100,7 +101,14 @@ def give_silhouette_scores(X, range_lower=1, range_upper=10, step=1, kmeans_set=
                      for model in kmeans_set[1:]]
 
         return silhouette_scores
+    elif return_kmeans_set is True:
+        kmeans_set = make_kmeans_set(X=X, range_lower=range_lower,
+                                    range_upper=range_upper, step=step)
 
+        silhouette_scores = [silhouette_score(X, model.labels_)
+                     for model in kmeans_set[1:]]
+
+        return kmeans_set, silhouette_scores
     else:
         kmeans_set = make_kmeans_set(X=X, range_lower=range_lower,
                                     range_upper=range_upper, step=step)
