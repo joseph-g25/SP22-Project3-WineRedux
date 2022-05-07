@@ -39,33 +39,30 @@ def make_final_model(X, y):
 
     cluster_features = ["free sulfur dioxide", "total sulfur dioxide", "pH", "sulphates"]
     scale_features = ["fixed acidity", "volatile acidity", "density",
-                      "residual sugar", "chlorides", "citric acid"]
-
-    cluster_attribs = X.columns(cluster_features)
-    scale_attribs = X.columns(scale_features)
-    cat_attribs = X.columns(["color"])
+                        "residual sugar", "chlorides", "citric acid"]
+    cat_features = ["color"]
 
     cluster_pipeline = Pipeline([
-        ("kmeans cluster", KMeans(n_clusters=3, random_state=RANDOM_STATE))
+        ("kmeans_cluster", KMeans(n_clusters=2, random_state=RANDOM_STATE))
         ])
 
     num_pipeline = Pipeline([
-        ("std_scaler", StandardScaler()),
+        ("std_scaler", StandardScaler(with_mean=True)),
         ])
 
     data_preparation_pipeline = ColumnTransformer([
-        ("cluster", cluster_pipeline, cluster_attribs),
-        ("num", num_pipeline, scale_attribs),
-        ("pass", "passthrough", cat_attribs)
-        ])
+        ("cluster", cluster_pipeline, cluster_features),
+        ("num", num_pipeline, scale_features),
+        ("pass", "passthrough", cat_features)
+        ], n_jobs=-1)
 
     model_pipeline = Pipeline([
         ("preprocessing", data_preparation_pipeline),
-        ("rf_reg", RandomForestRegressor(random_state=RANDOM_STATE)),
+        ("rf_reg", RandomForestRegressor(n_estimators=1000, random_state=RANDOM_STATE, bootstrap=True, n_jobs=-1)),
         ])
 
-    model_pipeline.fit(X=X, y=y)
-
+    model_pipeline.fit(X=X,y=y)
+    
     return model_pipeline
 
 def make_comparison_model(X, y):
@@ -88,25 +85,23 @@ def make_comparison_model(X, y):
     """
 
     scale_features = ["fixed acidity", "volatile acidity", "density",
-                      "residual sugar", "chlorides", "citric acid"]
-
-    scale_attribs = X.columns(scale_features)
-    cat_attribs = X.columns(["color"])
+                        "residual sugar", "chlorides", "citric acid"]
+    cat_features = ["color"]
 
     num_pipeline = Pipeline([
-        (),
+        ("std_scaler", StandardScaler(with_mean=True)),
         ])
 
     data_preparation_pipeline = ColumnTransformer([
-        ("num", num_pipeline, scale_attribs),
-        ("pass", "passthrough", cat_attribs)
-        ])
+        ("num", num_pipeline, scale_features),
+        ("pass", "passthrough", cat_features)
+        ], n_jobs=-1)
 
     model_pipeline = Pipeline([
         ("preprocessing", data_preparation_pipeline),
-        ("rf_reg", RandomForestRegressor(random_state=RANDOM_STATE)),
+        ("rf_reg", RandomForestRegressor(n_estimators=1000, random_state=RANDOM_STATE, bootstrap=True, n_jobs=-1)),
         ])
 
-    model_pipeline.fit(X=X, y=y)
-
+    model_pipeline.fit(X=X,y=y)
+    
     return model_pipeline
