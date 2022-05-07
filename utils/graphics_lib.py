@@ -106,7 +106,6 @@ def plot_silhouette_scores(silhouette_scores, var_name="", savefig=False):
     plt.axis([1, upper+2, 0, 1.2])
     if var_name != "":
         plt.title(label="Set: " + var_name,fontsize=16)
-    plt.suptitle("Silhouette scores for k clusters",fontsize=24, y=1)
     
     if savefig is True:
         fig_id_count = 0

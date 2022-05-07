@@ -25,9 +25,9 @@ comparison_model_score = comparison_model.score(X=X_test, y=y_test)
 predict_scores(final_model, comparison_slice, comparison_slice_labels)
 
 def print_stuff():
-      print(f"\nFinal model predictions: {final_model_predictions}",
-            f"\nComparison model predictions: {comparison_model_predictions}",
-            f"\nActual values: {comparison_slice_labels}",
-            f"\nScores\nFinal model: {final_model_score}",
-            f"\nComparison model: {comparison_model_score}"
-            )
+    print(f"\nFinal model predictions: {final_model_predictions}",
+        f"\nComparison model predictions: {comparison_model_predictions}",
+        f"\nActual values: {comparison_slice_labels}",
+        f"\nScores\nFinal model: {final_model_score}",
+        f"\nComparison model: {comparison_model_score}"
+        )
