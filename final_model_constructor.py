@@ -1,5 +1,5 @@
 """
-Project-specific functions to create and process the final and comparison model objects.
+Scripting environment to build and present the final model parameters
 """
 # Top-level utility imports
 #import pandas as pd
@@ -21,9 +21,9 @@ def make_final_model(X, y):
     Creates and fits the final model to the training data.
 
     Included pipelines:
-        Clustering pipeline
+        Clustering pipeline - operates on free sulfur dioxide, total sulfur dioxide, pH, sulphates
 
-        Number pipeline
+        Number pipeline - operates on fixed acidity, volatile acidity, density, residual sugar, chlorides, citric acid
 
         Data preparation pipeline
 
@@ -43,7 +43,7 @@ def make_final_model(X, y):
     cat_features = ["color"]
 
     cluster_pipeline = Pipeline([
-        ("kmeans_cluster", KMeans(n_clusters=2, random_state=RANDOM_STATE))
+        ("kmeans_cluster", KMeans(n_clusters=2, random_state=RANDOM_STATE, algorithm="full"))
         ])
 
     num_pipeline = Pipeline([
@@ -62,7 +62,7 @@ def make_final_model(X, y):
         ])
 
     model_pipeline.fit(X=X,y=y)
-    
+
     return model_pipeline
 
 def make_comparison_model(X, y):
@@ -70,8 +70,8 @@ def make_comparison_model(X, y):
     Creates and fits the comparison model to the training data.
 
     Included pipelines:
-        Number pipeline
-        
+        Number pipeline - operates on fixed acidity, volatile acidity, density, residual sugar, chlorides, citric acid
+
         Data preparation pipeline
 
         Model construction pipeline
@@ -103,5 +103,5 @@ def make_comparison_model(X, y):
         ])
 
     model_pipeline.fit(X=X,y=y)
-    
+
     return model_pipeline
